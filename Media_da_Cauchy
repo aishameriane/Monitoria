@@ -1,0 +1,52 @@
+###############################################
+#   Exemplo 1: Média da Cauchy e da Normal    #
+#################################################
+# Conteúdo: Probabilidade, Variáveis aleatórias #
+#################################################
+
+# Este exemplo mostra a falta de convergência da média da distribuição Cauchy e compara com a distribuição normal
+# São geradas 1000 amostras de tramanhos que variam de 100 a 100.000, calculadas as médias das amostras e plotadas em um gráfico
+
+# Gera um vetor com 1.000 amostras, com tamamhos de 100 a 100.000 e imprime na tela
+amostra<-seq(100,100000,100)
+amostra
+
+# Gera um vetor com 1.000 números 0 que irá armazenar a média de cada amostra
+media<-rep(0,length(amostra))
+
+for (i in 1:length(amostra)) {  # Para i indo de 1 a 1.000
+  j<-amostra[i]                 # Armazena o tamanho amostral 
+  x<-rcauchy(j,0,1)             # Gera j valores de uma Cauchy (por exemplo, se i = 1, j=100 e são gerados 100 valores)
+  media[i]<-sum(x)/j}           # Calcula a média dos valores de x
+
+# Omite a notação científica
+options(scipen=5)
+# Plota o gráfico
+plot(amostra, media, xlab="Tamanho da amostra", ylab="Média", xlim=c(100,100000), main="Valores da média amostral para 1000 amostras \n de tamanhos diferentes de uma Cauchy")
+
+# Armazena os valores em uma nova variável
+Cauchy<-cbind(amostra,rep(1,length(amostra)),media)
+# Mostra os primeiros valores da variável Cauchy
+head(Cauchy)
+
+
+# Faz o mesmo procedimento, mas agora os valores de x são uma normal(0,1)
+for (i in 1:length(amostra)) {
+  j<-amostra[i]
+  x<-rnorm(j,0,1)
+  media[i]<-sum(x)/j}
+
+options(scipen=5)
+plot(amostra, media, xlab="Tamanho da amostra", ylab="Média", xlim=c(100,100000), main="Valores da média amostral para 1000 amostras \n de tamanhos diferentes de uma Normal padrão")
+
+# Colocando os dois plots juntos
+
+# Primeiro plota a Cauchy
+plot(amostra, Cauchy[,3], xlab="Tamanho da amostra", ylab="Média", xlim=c(100,100000),ylim=c(-30,30), main="Valores da média amostral para 1000 amostras \n de tamanhos diferentes de uma Normal padrão e de uma Cauchy", cex.main=0.8)
+# Plota a normal
+lines(amostra, media, col="Red", t="p")
+# Cria vetores auxiliares para legenda
+labels<-c("Cauchy","Normal Padrão")
+colors<-c("Black", "Red")
+# Cria a legenda
+legend("topright", inset=.05, title="Distribuições", labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=colors, cex = 0.65)
