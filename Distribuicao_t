@@ -1,0 +1,83 @@
+#############################################################
+#   Exemplo 3: Mudanças nos graus de liberdade da t         #
+#############################################################
+
+# O objetivo do exercício é mostrar o que acontece quando variamos os parâmetros da distribuição Normal
+
+# Cria um vetor de valores, de -10 a 10 e tamanho 100
+valores <- seq(-4, 4, length=100)
+
+# Cria um vetor para armazenar os graus de liberdade e valores da f(x)
+gl<-rep(0,4)
+densidade<-matrix(rep(0,400),ncol=4)
+
+# Pede ao usuário os valores de média e desvio padrão para as 4 normais que serão comparadas com a normal padrão
+ler_gl <- function()
+{ 
+  for (i in 1:4) {
+    cat(prompt="\n","Insira a o valor dos g.l. da distribuição ", i, ": ")
+    gl[i] <- readline(prompt=" ")
+  }
+  return(c(as.double(gl)))
+  cat("Os valores inseridos são:")
+  for (i in 1:4){
+    cat("\n","G.L. ", i, " = ", medias[i])
+  }
+}
+
+Dados<-ler_gl()
+
+# Calcula o valor da f(x) para cada valor do vetor de valores
+# Primeiro calcula o valor da normal padrao
+t_1gl <- dt(valores, df=1)
+
+# Calcula os valores das demais densidades armazenando em cada uma das colunas da matriz, usando as medias e desvios informados
+for (i in 1:4) {
+  densidade[,i]<-dt(valores,df=Dados[i])
+}
+
+
+# Mostra os primeiros valores da matriz de densidades
+head(densidade)
+
+# Faz os gráficos, 1 a 1
+# Cria um vetor para as cores
+cores <- c("deeppink", "blue", "darkgreen", "gold", "black", "red")
+# Ajusta as margens
+par(mar=c(4,4,2,1))
+# Plota a distribuição normal padrão
+plot(valores,t_1gl,type="l",col=cores[5],main="Comparação de distribuições t",xlab="Valores de x",ylab="Densidade", ylim=c(0,max(densidade)))
+# Plota a legenda
+labels_aux<-rep(0,4)
+for (i in 1:4) {
+  labels_aux[i]<-paste("gl =",Dados[i])
+}
+labels <- c("gl = 1", labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4], "N. Padrão")
+legend("topright", inset=.05, title="Distribuições", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
+# Plota os outros gráficos, 1 a 1
+lines(valores, densidade[,1],col=cores[1])
+lines(valores, densidade[,2],col=cores[2])
+lines(valores, densidade[,3],col=cores[3])
+lines(valores, densidade[,4],col=cores[4])
+lines(valores, dnorm(valores),col=cores[6], lwd=2)
+
+# Plota o gráfico da diferença entre cada distribuição e a normal padrão
+dif<-dnorm(valores)-cbind(t_1gl,densidade)
+head(dif)
+
+
+plot(dif[,1],xlim=c(0,100), xlab="Valores de x",ylab="Erro", type='l',col=cores[1], main="Diferença entre a normal padrão e a t em cada ponto",cex.main=0.8)
+
+lines(dif[,2], type='l',col=cores[2])
+lines(dif[,3], type='l',col=cores[3])
+lines(dif[,4], type='l',col=cores[4])
+lines(dif[,5], type='l',col=cores[5])
+
+labels_aux<-rep(0,4)
+for (i in 1:4) {
+  labels_aux[i]<-paste("gl =",Dados[i])
+}
+labels <- c("gl = 1", labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4])
+legend("topright", inset=.05, title="Distribuições", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
