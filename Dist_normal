@@ -1,0 +1,69 @@
+#####################################################
+#   Exemplo 2: Mudanças nos parâmetros da Normal    #
+#####################################################
+
+# O objetivo do exercício é mostrar o que acontece quando variamos os parâmetros da distribuição Normal
+
+# Cria um vetor de valores, de -10 a 10 e tamanho 100
+valores <- seq(-10, 10, length=100)
+
+# Cria um vetor para armazenar as médias, desvios padrão e valores da f(x)
+medias<-rep(0,4)
+desvios<-rep(0,4)
+densidade<-matrix(rep(0,400),ncol=4)
+
+densidade
+
+# Pede ao usuário os valores de média e desvio padrão para as 4 normais que serão comparadas com a normal padrão
+ler_medias <- function()
+{ 
+  for (i in 1:4) {
+    cat(prompt="\n","Insira a o valor da média ", i, ": ")
+    medias[i] <- readline(prompt=" ")
+    cat(prompt="\n","Insira a o valor do desvio padrão ", i, ": ")
+    desvios[i] <- readline(prompt=" ")
+  }
+  return(c(as.double(medias),as.double(desvios)))
+  cat("Os valores inseridos são:")
+  for (i in 1:4){
+    cat("\n","Média ", i, " = ", medias[i])
+    cat("\n","Desvio Padrão ", i, " = ", desvios[i])
+  }
+}
+
+Dados<-ler_medias()
+medias<-Dados[1:4]
+desvios<-Dados[5:8]
+
+# Calcula o valor da f(x) para cada valor do vetor de valores
+# Primeiro calcula o valor da normal padrao
+padrao <- dnorm(valores)
+
+# Calcula os valores das demais densidades armazenando em cada uma das colunas da matriz, usando as medias e desvios informados
+for (i in 1:4) {
+      densidade[,i]<-dnorm(valores,mean=medias[i],sd=desvios[i])
+}
+
+# Mostra os primeiros valores da matriz de densidades
+head(densidade)
+
+# Faz os gráficos, 1 a 1
+# Cria um vetor para as cores
+cores <- c("red", "blue", "darkgreen", "gold", "black")
+# Ajusta as margens
+par(mar=c(3,3,2,1))
+# Plota a distribuição normal padrão
+plot(valores,padrao,type="l",main="Comparação de distribuições normais",xlab="Valores de x",ylab="Densidade", ylim=c(0,max(densidade)))
+# Plota a legenda
+labels_aux<-rep(0,4)
+for (i in 1:4) {
+  labels_aux[i]<-paste("m =",medias[i],", d =",desvios[i])
+}
+labels <- c("Padrão", labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4])
+legend("topright", inset=.05, title="Distribuições", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
+# Plota os outros gráficos, 1 a 1
+lines(valores, densidade[,1],col=cores[1])
+lines(valores, densidade[,2],col=cores[2])
+lines(valores, densidade[,3],col=cores[3])
+lines(valores, densidade[,4],col=cores[4])
