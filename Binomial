@@ -1,0 +1,68 @@
+##############################################################################
+#   Exemplo 4: Mudanças nos parâmetros p e n da distribuição Binomial        #
+##############################################################################
+
+# O objetivo do exercício é mostrar o que acontece quando variamos os parâmetros da 
+#distribuição Binomial
+# Observação: a normal a ser plotada terá os parâmetros np e raiz(np(1-p)) onde n e p
+# correspondem aos parâmetros da última binomial a ser informada
+
+# Cria um vetor para armazenar o tamanho da amostra e valores de p
+n<-rep(0,6)
+p<-rep(0,6)
+
+# Pede ao usuário os valores de n e p para as 6 binomiais que serão comparadas com a normal padrão
+ler_parametros <- function()
+{ 
+  for (i in 1:6) {
+    cat(prompt="\n","Insira a o tamanho da amostra ", i, ": ")
+    n[i] <- readline(prompt=" ")
+    cat(prompt="\n","Insira a o valor do parâmetro p ", i, ": ")
+    p[i] <- readline(prompt=" ")
+  }
+  return(c(as.double(n),as.double(p)))
+  cat("Os valores inseridos são:")
+  for (i in 1:6){
+    cat("\n","Tamanho de amostra ", i, " = ", n[i])
+    cat("\n","Probabilidade ", i, " = ", p[i])
+  }
+}
+
+Dados<-ler_parametros()
+n<-Dados[1:6]
+p<-Dados[7:12]
+
+# Cria um vetor com valores inteiros de 1 ao máximo n*p
+valores<-seq(from=0,to=(max(n*p)+3*sqrt(max(n*p*(1-p))))-2,by=1)
+
+fdistribuicao<-matrix(rep(0, 6*(length(valores))),ncol=6)
+
+# Calcula os valores das distribuições para cada par de n e p informado e armazena em uma matriz
+for (i in 1:6) {
+  fdistribuicao[,i]<-dbinom(valores,size=n[i],prob=p[i])
+}
+
+head(fdistribuicao)
+
+# Faz os gráficos, 1 a 1
+# Cria um vetor para as cores
+cores <- c("deeppink", "blue", "darkgreen", "gold", "black", "red", "mediumorchid1")
+# Ajusta as margens
+par(mar=c(4,4,2,1))
+# Plota a distribuição normal padrão
+plot(valores,dnorm(valores,mean=n[6]*p[6], sd=sqrt(n[6]*p[6]*(1-p[6]))),type="l",col=cores[7],main="Comparação de distribuições binomial com diferentes parâmetros \n e a dist normal m=np sd = sqrt(np(1-p))",xlab="Valores de x",ylab="Distribuicao/densidade", ylim=c(0,max(fdistribuicao)), cex.main=0.8)
+# Plota a legenda
+labels_aux<-rep(0,6)
+for (i in 1:6) {
+  labels_aux[i]<-paste("n =",n[i],", p=",p[i])
+}
+labels <- c(labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4], labels_aux[5], labels_aux[6], paste("Normal m=",round(n[6]*p[6]),"d.p.=",round(sqrt(n[6]*p[6]*(1-p[6]))),2))
+legend("topright", inset=.05, title="Distribuições", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
+# Plota os outros gráficos, 1 a 1
+lines(valores, fdistribuicao[,1],col=cores[1],type='h')
+lines(valores, fdistribuicao[,2],col=cores[2],type='h')
+lines(valores, fdistribuicao[,3],col=cores[3],type='h')
+lines(valores, fdistribuicao[,4],col=cores[4],type='h')
+lines(valores, fdistribuicao[,5],col=cores[5],type='h')
+lines(valores, fdistribuicao[,6],col=cores[6],type='h')
