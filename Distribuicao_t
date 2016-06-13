@@ -2,7 +2,7 @@
 #   Exemplo 3: Mudanças nos graus de liberdade da t         #
 #############################################################
 
-# O objetivo do exercício é mostrar o que acontece quando variamos os parâmetros da distribuição Normal
+# O objetivo do exercício é mostrar o que acontece quando variamos o parâmetro da distribuição t de student
 
 # Cria um vetor de valores, de -10 a 10 e tamanho 100
 valores <- seq(-4, 4, length=100)
