@@ -11,7 +11,7 @@ valores <- seq(-4, 4, length=100)
 gl<-rep(0,4)
 densidade<-matrix(rep(0,400),ncol=4)
 
-# Pede ao usuário os valores de média e desvio padrão para as 4 normais que serão comparadas com a normal padrão
+# Pede ao usuário os valores de média e desvio padrão para as 4 distribuições t que serão comparadas com a t de 1gl e a normal padrão
 ler_gl <- function()
 { 
   for (i in 1:4) {
