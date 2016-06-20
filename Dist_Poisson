@@ -1,0 +1,85 @@
+##############################################################################
+#   Exemplo 5: Mudanças no parâmetro lambda   da distribuição Poisson        #
+##############################################################################
+
+##########################
+# Parte a                #
+##########################
+
+# Calcula os valores da f(x) utilizando a equação com base em um valor de lambda
+
+# Pede para o usuário os valores de lambda e o valor inicial e final de x
+for (i in 1:1) {
+  cat(prompt="\n","Insira a o valor de lambda: ")
+  lambda <- as.double(readline(prompt=" "))
+  cat(prompt="\n", "Insira o valor inicial do vetor de valores x: ")
+  inicio <- as.double(readline(prompt=" "))
+  cat(prompt="\n", "Insira o valor final do vetor de valores x: ")
+  final <- as.double(readline(prompt=" "))
+}
+
+# Cria um vetor que vai do valor inicial informado até o valor final, de um em um
+valores_de_x <- inicio:final
+
+# Calcula as probabilidades dos valores de x, considerando que x tem distribuição poisson de parâmetro lambda
+distribuicao <- (exp(-lambda)*lambda^(valores_de_x))/factorial(valores_de_x)
+
+# Plota os valores calculados da distribuição
+plot(distribuicao, type = "l", main="Distribuição Poisson calculada a partir da fórmula da distribuição", cex.main=1)
+# Plota os valores da distribuição de x usando a função do R e considerando o lambda informado
+lines(dpois(valores_de_x, lambda), col="red", type="l")
+
+# Calcula as diferenças entre os valores encontrados e faz o gráfico
+diferenca<-distribuicao-dpois(valores_de_x, lambda)
+diferenca
+plot(diferenca, type='p', main = "Diferença entre valores calculados da f(x) pela equação \n e utilizando a função dpois() do R", cex.main = 0.8, xlab = "Valores de x", ylab = "Diferença")
+
+##########################
+# Parte b                #
+##########################
+lambda<-rep(0, 6)
+
+# Pede para o usuário os valores de lambda e o valor inicial e final de x
+for (i in 1:1) {
+   for (j in 1:6) {
+    if (j < 6) {
+      cat(prompt="\n","Insira a o valor de lambda ", j, ": ")
+      lambda[j] <- as.double(readline(prompt=" "))
+    } else {
+      cat(prompt="\n","Insira a o valor de lambda", j, "(este será usado para gerar uma normal, então use um valor maior que 20): ")
+      lambda[j] <- as.double(readline(prompt=" ")) 
+    }
+  }
+  cat(prompt="\n", "Insira o valor inicial do vetor de valores x: ")
+  inicio <- as.double(readline(prompt=" "))
+  cat(prompt="\n", "Insira o valor final do vetor de valores x: ")
+  final <- as.double(readline(prompt=" "))
+}
+
+# Monta o vetor de valores de x
+valores_de_x<-inicio:final
+
+
+# Cria um vetor para as cores
+cores <- c("deeppink", "blue", "darkgreen", "gold", "black", "red", "mediumorchid1")
+# Ajusta as margens
+par(mar=c(4,4,2,1))
+
+# Plota o gráfico da normal de média lambda[6] e desvio padrão sqrt(lambda[6])
+plot(dnorm(1:round(lambda[6]+4*sqrt(lambda[6])), mean=lambda[6], sd=sqrt(lambda[6])), ylim=c(0, max(dpois(valores_de_x, lambda=min(lambda)))), type="l", main = "Comparação da distribuição de Poisson com a Normal", col=cores[7], ylab="Probabilidade", xlab="Valores de X")
+
+# Plota a legenda
+labels_aux<-rep(0,6)
+for (i in 1:6) {
+  labels_aux[i]<-paste("lambda = ",lambda[i])
+}
+labels <- c(labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4], labels_aux[5], labels_aux[6], paste("Normal m=",lambda[6],"d.p.=",round(sqrt(lambda[6]),2)))
+legend("topright", inset=.05, title="Distribuições", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
+# Plota os outros gráficos, 1 a 1
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[1]),col=cores[1],type='h')
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[2]),col=cores[2],type='h')
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[3]),col=cores[3],type='h')
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[4]),col=cores[4],type='h')
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[5]),col=cores[5],type='h')
+lines(valores_de_x, dpois(valores_de_x, lambda = lambda[6]),col=cores[6],type='h')
