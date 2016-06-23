@@ -1,0 +1,34 @@
+##########################################
+# Exemplo 6 - Distribuição Exponencial   #
+##########################################
+
+# Cria um vetor de lambdas 
+
+lambda <- c(1/1,1/5,1/2.5,1/0.25,1/0.5,1/0.75)
+
+# Cria um vetor com valores de X
+x<- seq(0,10,0.1)
+
+# Cria um vetor para as cores
+cores <- c("deeppink", "blue", "darkgreen", "gold", "black", "red", "mediumorchid1")
+# Ajusta as margens
+par(mar=c(4,4,2,1))
+
+# Plota a primeira distribuição
+plot(x, dexp(x, rate=lambda[1]), type="l", main = "Distribuição Exponencial", xlab="Valores de X", ylab="Densidade", col=cores[1])
+
+labels_aux<-rep(0,6)
+for (i in 1:6) {
+  labels_aux[i]<-paste("lambda = ",round(lambda[i],2))
+}
+
+labels <- c(labels_aux[1], labels_aux[2], labels_aux[3], labels_aux[4], labels_aux[5], labels_aux[6])
+legend("topright", inset=.05, title="Parâmetros", legend=labels, lwd=2, lty=c(1, 1, 1, 1, 2), col=cores,cex=0.6)
+
+# Plota os outros gráficos, 1 a 1
+lines(x, dexp(x, rate = lambda[2]),col=cores[2],type='l')
+lines(x, dexp(x, rate = lambda[3]),col=cores[3],type='l')
+lines(x, dexp(x, rate = lambda[4]),col=cores[4],type='l')
+lines(x, dexp(x, rate = lambda[5]),col=cores[5],type='l')
+lines(x, dexp(x, rate = lambda[6]),col=cores[6],type='l')
+
